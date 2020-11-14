@@ -38,9 +38,8 @@ pub fn chunk_compressor_system<V>(
 
     let overgrowth = num_cached - cache_config.max_cached_chunks;
 
-    let num_to_compress = overgrowth
-        .max(0)
-        .min(pool.thread_num() * cache_config.max_chunks_compressed_per_frame_per_thread);
+    let num_to_compress =
+        overgrowth.min(pool.thread_num() * cache_config.max_chunks_compressed_per_frame_per_thread);
 
     let mut chunks_to_compress = Vec::new();
     for _ in 0..num_to_compress {
