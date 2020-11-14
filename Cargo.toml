@@ -15,3 +15,6 @@ git = "https://github.com/bonsairobo/building-blocks"
 branch = "main"
 # version = "0.2.1"
 features = []
+
+[profile.release]
+lto = true
