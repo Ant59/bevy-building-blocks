@@ -92,7 +92,7 @@ pub fn default_chunk_map<V>(chunk_shape: Point3i) -> ChunkMap3<V>
 where
     V: Voxel,
 {
-    ChunkMap3::new(chunk_shape, V::default(), (), FastLz4 { level: 10 })
+    ChunkMap3::new(chunk_shape, V::default(), (), Snappy)
 }
 
 pub fn default_array<V>(extent: Extent3i) -> Array3<V>

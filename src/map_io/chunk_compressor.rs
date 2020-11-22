@@ -1,7 +1,7 @@
 use crate::{Voxel, VoxelMap};
 
 use bevy::{prelude::*, tasks::ComputeTaskPool};
-use building_blocks::storage::{Compressible, FastLz4};
+use building_blocks::storage::{Compression, FastChunkCompression, Snappy};
 
 #[derive(Clone, Copy)]
 pub struct ChunkCacheConfig {
@@ -50,9 +50,10 @@ pub fn chunk_compressor_system<V>(
         }
     }
 
+    let compression = FastChunkCompression::new(Snappy);
     let compressed_chunks = pool.scope(|s| {
         for (key, chunk) in chunks_to_compress.into_iter() {
-            s.spawn(async move { (key, chunk.compress(FastLz4 { level: 10 })) });
+            s.spawn(async move { (key, compression.compress(&chunk)) });
         }
     });
 
