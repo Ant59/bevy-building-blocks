@@ -5,10 +5,14 @@ authors = ["Duncan <bonsairobo@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-# bevy = "0.3"
-bevy = { branch = "master", git = "https://github.com/bevyengine/bevy" }
 fnv = "1.0"
 thread_local = "1.0"
+
+[dependencies.bevy]
+# version = "0.3"
+# path = "../bevy"
+git = "https://github.com/aclysma/bevy"
+branch = "fix-deadlock-calling-scope-from-system"
 
 [dependencies.building-blocks]
 git = "https://github.com/bonsairobo/building-blocks"
