@@ -11,8 +11,8 @@ thread_local = "1.0"
 [dependencies.bevy]
 # version = "0.3"
 # path = "../bevy"
-git = "https://github.com/aclysma/bevy"
-branch = "fix-deadlock-calling-scope-from-system"
+git = "https://github.com/bevyengine/bevy"
+branch = "master"
 
 [dependencies.building-blocks]
 git = "https://github.com/bonsairobo/building-blocks"
