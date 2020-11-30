@@ -10,8 +10,8 @@ use building_blocks::prelude::*;
 /// available in the `DirtyChunks` resource.
 #[derive(SystemParam)]
 pub struct VoxelEditor<'a, V: Voxel> {
+    pub map: Res<'a, VoxelMap<V>>,
     edit_buffer: ResMut<'a, EditBuffer<V>>,
-    map: Res<'a, VoxelMap<V>>,
     local_cache: Res<'a, ThreadLocalVoxelCache<V>>,
 }
 
