@@ -58,20 +58,19 @@ where
             });
         }
 
-        // Mark the chunks and maybe their neighbors as dirty.
-        let dirty_extent = if touch_neighbors {
-            let chunk_shape = *reader.chunk_shape();
-
-            Extent3i::from_min_and_max(extent.minimum - chunk_shape, extent.max() + chunk_shape)
-        } else {
-            extent
-        };
-        for chunk_key in reader.chunk_keys_for_extent(&dirty_extent) {
-            self.dirty_chunk_keys.insert(chunk_key);
-        }
+        self.dirty_chunks_for_extent(touch_neighbors, extent);
 
         // Edit the backbuffer.
         self.edited_voxels.for_each_mut(&extent, edit_func);
+    }
+
+    pub fn insert_chunk(&mut self, touch_neighbors: bool, chunk_key: Point3i, chunk: Array3<V>) {
+        // PERF: this could be more efficient if we just took the moore neighborhood in chunk space
+        let extent = self.edited_voxels.extent_for_chunk_at_key(&chunk_key);
+        self.dirty_chunks_for_extent(touch_neighbors, extent);
+
+        self.edited_voxels
+            .insert_chunk(chunk_key, Chunk3::with_array(chunk));
     }
 
     /// Write all of the edited chunks into `dst_map`. Returns the dirty chunks.
@@ -95,6 +94,20 @@ where
         DirtyChunks {
             edited_chunk_keys,
             dirty_chunk_keys,
+        }
+    }
+
+    fn dirty_chunks_for_extent(&mut self, touch_neighbors: bool, extent: Extent3i) {
+        // Mark the chunks and maybe their neighbors as dirty.
+        let dirty_extent = if touch_neighbors {
+            let chunk_shape = *self.edited_voxels.chunk_shape();
+
+            Extent3i::from_min_and_max(extent.minimum - chunk_shape, extent.max() + chunk_shape)
+        } else {
+            extent
+        };
+        for chunk_key in self.edited_voxels.chunk_keys_for_extent(&dirty_extent) {
+            self.dirty_chunk_keys.insert(chunk_key);
         }
     }
 }

@@ -45,4 +45,12 @@ where
         self.edit_buffer
             .edit_voxels_out_of_place(&reader, extent, edit_func, touch_neighbors);
     }
+
+    pub fn insert_chunk_and_touch_neighbors(&mut self, chunk_key: Point3i, chunk: Array3<V>) {
+        self.edit_buffer.insert_chunk(true, chunk_key, chunk);
+    }
+
+    pub fn insert_chunk(&mut self, chunk_key: Point3i, chunk: Array3<V>) {
+        self.edit_buffer.insert_chunk(false, chunk_key, chunk);
+    }
 }
