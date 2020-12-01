@@ -11,8 +11,8 @@ use building_blocks::prelude::*;
 #[derive(SystemParam)]
 pub struct VoxelEditor<'a, V: Voxel> {
     pub map: Res<'a, VoxelMap<V>>,
+    pub local_cache: Res<'a, ThreadLocalVoxelCache<V>>,
     edit_buffer: ResMut<'a, EditBuffer<V>>,
-    local_cache: Res<'a, ThreadLocalVoxelCache<V>>,
 }
 
 impl<'a, V> VoxelEditor<'a, V>
