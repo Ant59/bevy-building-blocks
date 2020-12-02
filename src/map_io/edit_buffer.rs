@@ -4,7 +4,7 @@ use crate::{
 };
 
 use bevy::prelude::*;
-use building_blocks::{prelude::*, storage::compressible_map::MaybeCompressed};
+use building_blocks::prelude::*;
 use fnv::FnvHashSet;
 
 /// For the sake of pipelining, all voxels edits are first written out of place here. They can later
@@ -52,6 +52,7 @@ where
                     // We don't cache the chunk yet, because we're just going to modify this copy
                     // and insert back into the map later.
                     .copy_chunk_without_caching(&chunk_key)
+                    .map(|c| c.as_decompressed())
                     .unwrap_or(Chunk3::with_array(default_array(
                         reader.extent_for_chunk_at_key(&chunk_key),
                     )))
@@ -68,7 +69,6 @@ where
         // PERF: this could be more efficient if we just took the moore neighborhood in chunk space
         let extent = self.edited_voxels.extent_for_chunk_at_key(&chunk_key);
         self.dirty_chunks_for_extent(touch_neighbors, extent);
-
         self.edited_voxels
             .insert_chunk(chunk_key, Chunk3::with_array(chunk));
     }
@@ -83,12 +83,9 @@ where
         let edited_chunk_keys = edited_voxels.chunk_keys().cloned().collect();
 
         for (chunk_key, chunk) in edited_voxels.chunks.into_iter() {
-            match chunk {
-                MaybeCompressed::Compressed(_) => panic!("Never compress the back buffer"),
-                MaybeCompressed::Decompressed(chunk) => {
-                    dst_map.chunks.insert(chunk_key, chunk);
-                }
-            }
+            dst_map
+                .chunks
+                .insert(chunk_key, chunk.unwrap_decompressed());
         }
 
         DirtyChunks {

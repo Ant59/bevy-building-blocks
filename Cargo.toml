@@ -18,6 +18,7 @@ rev = "3da653e4"
 [dependencies.building-blocks]
 git = "https://github.com/bonsairobo/building-blocks"
 branch = "main"
+# path = "../building-blocks"
 # version = "0.2.1"
 features = []
 
