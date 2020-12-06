@@ -2,7 +2,8 @@ use super::{
     chunk_cache_flusher::chunk_cache_flusher_system,
     chunk_compressor::chunk_compressor_system,
     edit_buffer::{double_buffering_system, DirtyChunks},
-    EditBuffer, ThreadLocalVoxelCache,
+    empty_chunk_remover::empty_chunk_remover_system,
+    EditBuffer, EmptyChunks, ThreadLocalVoxelCache,
 };
 
 use crate::Voxel;
@@ -82,12 +83,15 @@ where
         app.add_resource(self.cache_config)
             .add_resource(EditBuffer::<V>::new(self.chunk_shape))
             .add_resource(DirtyChunks::default())
+            .add_resource(EmptyChunks::default())
             // Each thread gets its own local chunk cache. The local caches are flushed into the
             // global cache in the chunk_cache_flusher_system.
             .add_resource(ThreadLocalVoxelCache::<V>::new())
             // Ordering the cache flusher and double buffering is important, because we don't want
-            // to overwrite edits with locally cached chunks.
+            // to overwrite edits with locally cached chunks. Similarly, empty chunks should be
+            // removed before new edits are merged in.
             .add_system_to_stage(stage::LAST, chunk_cache_flusher_system::<V>.system())
+            .add_system_to_stage(stage::LAST, empty_chunk_remover_system::<V>.system())
             .add_system_to_stage(stage::LAST, double_buffering_system::<V>.system())
             .add_system_to_stage(stage::LAST, chunk_compressor_system::<V>.system());
     }

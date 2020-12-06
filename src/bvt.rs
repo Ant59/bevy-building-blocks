@@ -1,4 +1,4 @@
-use crate::{DirtyChunks, ThreadLocalVoxelCache, Voxel, VoxelMap};
+use crate::{DirtyChunks, EmptyChunks, ThreadLocalVoxelCache, Voxel, VoxelMap};
 
 use building_blocks::{prelude::*, search::OctreeDBVT, storage::octree::OctreeSet};
 
@@ -35,6 +35,7 @@ fn octree_generator_system<V>(
     local_caches: Res<ThreadLocalVoxelCache<V>>,
     dirty_chunks: Res<DirtyChunks>,
     mut voxel_bvt: ResMut<VoxelBVT>,
+    mut empty_chunks: ResMut<EmptyChunks>,
 ) where
     V: Voxel,
     for<'r> &'r V::TypeInfo: IsEmpty,
@@ -45,6 +46,7 @@ fn octree_generator_system<V>(
     for (chunk_key, octree) in new_chunk_octrees.into_iter() {
         if octree.is_empty() {
             voxel_bvt.remove(&chunk_key);
+            empty_chunks.mark_for_removal(chunk_key);
         } else {
             voxel_bvt.insert(chunk_key, octree);
         }

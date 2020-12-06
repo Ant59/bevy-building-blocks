@@ -16,7 +16,9 @@ pub use thread_local_resource::{ThreadLocalResource, ThreadLocalResourceHandle};
 pub use map::{default_array, empty_chunk_map, VoxelMap, VoxelPalette};
 
 // Systems and resources that facilitate voxel access.
-pub use map_io::{ChunkCacheConfig, DirtyChunks, MapIoPlugin, ThreadLocalVoxelCache, VoxelEditor};
+pub use map_io::{
+    ChunkCacheConfig, DirtyChunks, EmptyChunks, MapIoPlugin, ThreadLocalVoxelCache, VoxelEditor,
+};
 
 /// You can use your own type of voxel, but it must implement this trait.
 pub trait Voxel: 'static + Copy + Default + Send + Sync {

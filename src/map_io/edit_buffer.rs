@@ -132,5 +132,3 @@ pub fn double_buffering_system<V>(
     );
     *dirty_chunks = edit_buffer.merge_edits(&mut voxel_map.voxels);
 }
-
-// TODO: remove chunks when they are completely empty; maybe we could determine this with the octree
