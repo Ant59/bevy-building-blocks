@@ -1,8 +1,14 @@
 //! Bevy plugins for the building-blocks voxel library.
 
+#[cfg(feature = "ncollide")]
+mod bvt;
+
 mod map;
 mod map_io;
 mod thread_local_resource;
+
+#[cfg(feature = "ncollide")]
+pub use bvt::{BVTPlugin, VoxelBVT};
 
 pub use thread_local_resource::{ThreadLocalResource, ThreadLocalResourceHandle};
 

@@ -4,6 +4,9 @@ version = "0.1.0"
 authors = ["Duncan <bonsairobo@gmail.com>"]
 edition = "2018"
 
+[features]
+ncollide = ["building-blocks/ncollide"]
+
 [dependencies]
 fnv = "1.0"
 thread_local = "1.0"
