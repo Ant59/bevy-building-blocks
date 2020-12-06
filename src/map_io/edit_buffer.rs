@@ -1,5 +1,5 @@
 use crate::{
-    map::{default_array, default_chunk_map},
+    map::{default_array, empty_chunk_map},
     Voxel, VoxelMap,
 };
 
@@ -24,7 +24,7 @@ where
 {
     pub fn new(chunk_shape: Point3i) -> Self {
         Self {
-            edited_voxels: default_chunk_map(chunk_shape),
+            edited_voxels: empty_chunk_map(chunk_shape),
             dirty_chunk_keys: Default::default(),
         }
     }

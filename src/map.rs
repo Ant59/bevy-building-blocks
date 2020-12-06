@@ -14,7 +14,7 @@ use building_blocks::prelude::*;
 ///
 /// # Constructing a Voxel Map
 /// ```
-/// use bevy_building_blocks::{bb::prelude::*, Voxel, VoxelMap, VoxelPalette, default_chunk_map};
+/// use bevy_building_blocks::{bb::prelude::*, Voxel, VoxelMap, VoxelPalette, empty_chunk_map};
 ///
 /// #[derive(Copy, Clone, Default)]
 /// struct MyVoxel {
@@ -36,7 +36,7 @@ use building_blocks::prelude::*;
 /// const CHUNK_SHAPE: Point3i = PointN([16; 3]);
 ///
 /// let map = VoxelMap {
-///     voxels: default_chunk_map::<MyVoxel>(CHUNK_SHAPE),
+///     voxels: empty_chunk_map::<MyVoxel>(CHUNK_SHAPE),
 ///     palette: VoxelPalette {
 ///         infos: vec![
 ///             MyVoxelTypeInfo { is_empty: true },
@@ -88,7 +88,7 @@ impl<I> VoxelPalette<I> {
     }
 }
 
-pub fn default_chunk_map<V>(chunk_shape: Point3i) -> ChunkMap3<V>
+pub fn empty_chunk_map<V>(chunk_shape: Point3i) -> ChunkMap3<V>
 where
     V: Voxel,
 {
