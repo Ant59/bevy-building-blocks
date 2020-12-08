@@ -16,4 +16,4 @@ Bevy plugins for the [building-blocks](https://github.com/bonsairobo/building-bl
 - `BvtPlugin`
   - Manages the `VoxelBVT` resource
   - Generates a new `OctreeSet` for each dirty chunk every frame
-  - Detects empty octrees and marks the corresponding chunks for deletion
+  - Detects empty octrees and marks the corresponding chunks for deletion in the `EmptyChunks` resource
