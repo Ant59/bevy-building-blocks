@@ -41,7 +41,7 @@ where
         edit_func: impl FnMut(Point3i, &mut V),
     ) {
         let tls = self.local_cache.get();
-        let reader = self.map.reader(&tls);
+        let reader = self.map.read(&tls);
         self.edit_buffer
             .edit_voxels_out_of_place(&reader, extent, edit_func, touch_neighbors);
     }

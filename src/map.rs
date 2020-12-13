@@ -14,7 +14,7 @@ use building_blocks::prelude::*;
 ///
 /// # Constructing a Voxel Map
 /// ```
-/// use bevy_building_blocks::{bb::prelude::*, Voxel, VoxelMap, VoxelPalette, empty_chunk_map};
+/// use bevy_building_blocks::{bb::prelude::*, Voxel, VoxelMap, VoxelPalette, empty_compressible_chunk_map};
 ///
 /// #[derive(Copy, Clone, Default)]
 /// struct MyVoxel {
@@ -36,7 +36,7 @@ use building_blocks::prelude::*;
 /// const CHUNK_SHAPE: Point3i = PointN([16; 3]);
 ///
 /// let map = VoxelMap {
-///     voxels: empty_chunk_map::<MyVoxel>(CHUNK_SHAPE),
+///     voxels: empty_compressible_chunk_map::<MyVoxel>(CHUNK_SHAPE),
 ///     palette: VoxelPalette {
 ///         infos: vec![
 ///             MyVoxelTypeInfo { is_empty: true },
@@ -49,7 +49,7 @@ pub struct VoxelMap<V>
 where
     V: Voxel,
 {
-    pub voxels: ChunkMap3<V>,
+    pub voxels: CompressibleChunkMap3<V>,
     pub palette: VoxelPalette<V::TypeInfo>,
 }
 
@@ -63,13 +63,14 @@ where
         move |v: V| self.palette.get_voxel_type_info(v)
     }
 
-    pub fn reader<'a>(
+    pub fn read<'a>(
         &'a self,
         cache: &'a ThreadLocalResourceHandle<LocalChunkCache3<V>>,
-    ) -> ChunkMapReader3<'a, V> {
-        ChunkMapReader3::new(
-            &self.voxels,
-            cache.get_or_create_with(|| LocalChunkCache3::new()),
+    ) -> ChunkMap3<V, (), CompressibleChunkStorageReader3<V>> {
+        self.voxels.builder().build(
+            self.voxels
+                .storage()
+                .reader(cache.get_or_create_with(|| LocalChunkCache3::new())),
         )
     }
 }
@@ -88,11 +89,29 @@ impl<I> VoxelPalette<I> {
     }
 }
 
-pub fn empty_chunk_map<V>(chunk_shape: Point3i) -> ChunkMap3<V>
+pub fn chunk_map_builder<V>(chunk_shape: Point3i) -> ChunkMapBuilder3<V>
 where
     V: Voxel,
 {
-    ChunkMap3::new(chunk_shape, V::default(), (), Lz4 { level: 10 })
+    ChunkMapBuilder3 {
+        chunk_shape,
+        ambient_value: V::default(),
+        default_chunk_metadata: (),
+    }
+}
+
+pub fn empty_compressible_chunk_map<V>(chunk_shape: Point3i) -> CompressibleChunkMap3<V>
+where
+    V: Voxel,
+{
+    chunk_map_builder(chunk_shape).build(CompressibleChunkStorage3::new(Lz4 { level: 10 }))
+}
+
+pub fn empty_chunk_hash_map<V>(chunk_shape: Point3i) -> ChunkHashMap3<V>
+where
+    V: Voxel,
+{
+    chunk_map_builder(chunk_shape).build_with_hash_map_storage()
 }
 
 pub fn default_array<V>(extent: Extent3i) -> Array3<V>

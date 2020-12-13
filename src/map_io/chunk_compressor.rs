@@ -31,7 +31,7 @@ pub fn chunk_compressor_system<V>(
 ) where
     V: Voxel,
 {
-    let num_cached = voxel_map.voxels.chunks.len_cached();
+    let num_cached = voxel_map.voxels.storage().cache.len_cached();
     if num_cached < cache_config.max_cached_chunks {
         return;
     }
@@ -43,7 +43,7 @@ pub fn chunk_compressor_system<V>(
 
     let mut chunks_to_compress = Vec::new();
     for _ in 0..num_to_compress {
-        if let Some(key_and_chunk) = voxel_map.voxels.chunks.remove_lru() {
+        if let Some(key_and_chunk) = voxel_map.voxels.storage_mut().remove_lru() {
             chunks_to_compress.push(key_and_chunk);
         } else {
             break;
@@ -60,7 +60,7 @@ pub fn chunk_compressor_system<V>(
     for (key, compressed_chunk) in compressed_chunks.into_iter() {
         voxel_map
             .voxels
-            .chunks
+            .storage_mut()
             .insert_compressed(key, compressed_chunk);
     }
 }

@@ -13,7 +13,9 @@ pub use bvt::{BVTPlugin, VoxelBVT};
 pub use thread_local_resource::{ThreadLocalResource, ThreadLocalResourceHandle};
 
 // Core data structures.
-pub use map::{default_array, empty_chunk_map, VoxelMap, VoxelPalette};
+pub use map::{
+    default_array, empty_chunk_hash_map, empty_compressible_chunk_map, VoxelMap, VoxelPalette,
+};
 
 // Systems and resources that facilitate voxel access.
 pub use map_io::{

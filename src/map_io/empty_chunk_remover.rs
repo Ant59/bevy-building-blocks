@@ -27,6 +27,6 @@ pub fn empty_chunk_remover_system<V>(
     V: Voxel,
 {
     for chunk_key in empty_chunks.chunks_to_remove.drain(..) {
-        voxel_map.voxels.remove_chunk(chunk_key);
+        voxel_map.voxels.storage_mut().remove(&chunk_key);
     }
 }
