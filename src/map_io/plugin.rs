@@ -31,7 +31,7 @@ pub use super::chunk_compressor::ChunkCacheConfig;
 /// ) {
 ///     // The TLS has to live longer than the reader.
 ///     let thread_local_cache = caches.get();
-///     let reader = voxel_map.read(&thread_local_cache);
+///     let reader = voxel_map.reader(&thread_local_cache);
 ///
 ///     let extent = Extent3i::from_min_and_shape(PointN([-100; 3]), PointN([200; 3]));
 ///     reader.for_each(&extent, |p: Point3i, voxel: V| {});

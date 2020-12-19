@@ -63,15 +63,12 @@ where
         move |v: V| self.palette.get_voxel_type_info(v)
     }
 
-    pub fn read<'a>(
+    pub fn reader<'a>(
         &'a self,
         cache: &'a ThreadLocalResourceHandle<LocalChunkCache3<V>>,
     ) -> ChunkMap3<V, (), CompressibleChunkStorageReader3<V>> {
-        self.voxels.builder().build(
-            self.voxels
-                .storage()
-                .reader(cache.get_or_create_with(|| LocalChunkCache3::new())),
-        )
+        self.voxels
+            .reader(cache.get_or_create_with(|| LocalChunkCache3::new()))
     }
 }
 
@@ -104,7 +101,8 @@ pub fn empty_compressible_chunk_map<V>(chunk_shape: Point3i) -> CompressibleChun
 where
     V: Voxel,
 {
-    chunk_map_builder(chunk_shape).build(CompressibleChunkStorage3::new(Lz4 { level: 10 }))
+    chunk_map_builder(chunk_shape)
+        .build_with_write_storage(CompressibleChunkStorage3::new(Lz4 { level: 10 }))
 }
 
 pub fn empty_chunk_hash_map<V>(chunk_shape: Point3i) -> ChunkHashMap3<V>

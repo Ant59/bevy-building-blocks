@@ -15,14 +15,16 @@ thread_local = "1.0"
 # version = "0.3"
 # path = "../bevy"
 git = "https://github.com/bevyengine/bevy"
-branch = "master"
+# branch = "master"
+rev = "51650f114fbf31fc89db7bd69542dc21edf2dcb7"
 
 [dependencies.building-blocks]
 git = "https://github.com/bonsairobo/building-blocks"
 branch = "main"
 # path = "../building-blocks"
 # version = "0.2.1"
-features = []
+default-features = false
+features = ["lz4", "ncollide"]
 
 [profile.release]
 lto = true
