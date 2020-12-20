@@ -12,11 +12,12 @@ fnv = "1.0"
 thread_local = "1.0"
 
 [dependencies.bevy]
-# version = "0.3"
+# version = "0.4"
 # path = "../bevy"
 git = "https://github.com/bevyengine/bevy"
 # branch = "master"
 rev = "51650f114fbf31fc89db7bd69542dc21edf2dcb7"
+# features = ["dynamic"]
 
 [dependencies.building-blocks]
 git = "https://github.com/bonsairobo/building-blocks"
