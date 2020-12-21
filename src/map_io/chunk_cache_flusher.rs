@@ -15,5 +15,4 @@ pub fn chunk_cache_flusher_system<V>(
     for cache in taken_caches.into_iter() {
         voxel_map.voxels.storage_mut().flush_local_cache(cache);
     }
-    *local_caches = ThreadLocalVoxelCache::new();
 }
