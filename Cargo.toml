@@ -25,7 +25,7 @@ branch = "main"
 # path = "../building-blocks"
 # version = "0.2.1"
 default-features = false
-features = ["lz4", "ncollide"]
+features = ["lz4", "ncollide", "search"]
 
 [profile.release]
 lto = true
