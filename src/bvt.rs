@@ -14,14 +14,17 @@ pub struct BVTPlugin<V> {
     marker: std::marker::PhantomData<V>,
 }
 
-impl<V> Plugin for BVTPlugin<V>
+impl<V> BVTPlugin<V>
 where
     V: Voxel,
     for<'r> &'r V::TypeInfo: IsEmpty,
 {
-    fn build(&self, app: &mut AppBuilder) {
-        app.add_resource(VoxelBVT::default())
-            .add_system(octree_generator_system::<V>.system());
+    pub fn initialize(commands: &mut Commands) {
+        commands.insert_resource(VoxelBVT::default());
+    }
+
+    pub fn add_to_update_stage(stage: &mut SystemStage) {
+        stage.add_system(octree_generator_system::<V>.system());
     }
 }
 
