@@ -23,7 +23,7 @@ where
         commands.insert_resource(VoxelBVT::default());
     }
 
-    pub fn add_to_update_stage(stage: &mut SystemStage) {
+    pub fn update_in_stage(stage: &mut SystemStage) {
         stage.add_system(octree_generator_system::<V>.system());
     }
 }
