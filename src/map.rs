@@ -59,6 +59,7 @@ where
 {
     /// Returns a closure that transforms voxels into their type's corresponding info. This is
     /// intended to be used with a `TransformMap`.
+    #[inline]
     pub fn voxel_info_transform<'a>(&'a self) -> impl Fn(V) -> &'a V::TypeInfo {
         move |v: V| self.palette.get_voxel_type_info(v)
     }
