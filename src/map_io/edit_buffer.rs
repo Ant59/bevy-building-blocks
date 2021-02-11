@@ -57,7 +57,7 @@ where
                         .storage
                         // We don't cache the chunk yet, because we're just going to modify this copy
                         // and insert back into the map later.
-                        .copy_without_caching(&chunk_key)
+                        .copy_without_caching(chunk_key)
                         .map(|c| c.as_decompressed())
                         .unwrap_or(Chunk3::with_array(default_array(
                             reader.indexer.extent_for_chunk_at_key(chunk_key),
