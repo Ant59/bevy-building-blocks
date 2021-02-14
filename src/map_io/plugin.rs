@@ -80,13 +80,13 @@ where
     V: Voxel,
 {
     fn build(&self, app: &mut AppBuilder) {
-        app.add_resource(self.cache_config)
-            .add_resource(EditBuffer::<V>::new(self.chunk_shape))
-            .add_resource(DirtyChunks::default())
-            .add_resource(EmptyChunks::default())
+        app.insert_resource(self.cache_config)
+            .insert_resource(EditBuffer::<V>::new(self.chunk_shape))
+            .insert_resource(DirtyChunks::default())
+            .insert_resource(EmptyChunks::default())
             // Each thread gets its own local chunk cache. The local caches are flushed into the
             // global cache in the chunk_cache_flusher_system.
-            .add_resource(ThreadLocalVoxelCache::<V>::new())
+            .insert_resource(ThreadLocalVoxelCache::<V>::new())
             // Ordering the cache flusher and double buffering is important, because we don't want
             // to overwrite edits with locally cached chunks. Similarly, empty chunks should be
             // removed before new edits are merged in.

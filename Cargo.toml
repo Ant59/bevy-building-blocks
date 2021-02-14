@@ -16,7 +16,7 @@ thread_local = "1.0"
 # path = "../bevy"
 git = "https://github.com/bevyengine/bevy"
 # branch = "master"
-rev = "51650f114fbf31fc89db7bd69542dc21edf2dcb7"
+rev = "3475a64"
 # features = ["dynamic"]
 
 [dependencies.building-blocks]
