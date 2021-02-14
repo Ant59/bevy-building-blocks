@@ -71,7 +71,7 @@ where
             s.spawn(async move {
                 let cache_tls = local_caches.get();
                 let reader = map.reader(&cache_tls);
-                let chunk = reader.get_chunk(&chunk_key).unwrap();
+                let chunk = reader.get_chunk(chunk_key).unwrap();
                 let transform_chunk = TransformMap::new(&chunk.array, map.voxel_info_transform());
 
                 (
